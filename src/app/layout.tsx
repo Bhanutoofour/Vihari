@@ -1,5 +1,7 @@
-import type { Metadata } from "next";
 import "./globals.css";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Vihara – The Courtyard | Private Estate near Hyderabad",
@@ -28,7 +30,11 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <Navbar />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }

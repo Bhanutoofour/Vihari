@@ -4,13 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 
 const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "About Us", href: "#about" },
-  { label: "Amenities", href: "#amenities" },
-  { label: "Activities", href: "#activities" },
-  { label: "Gallery", href: "#gallery" },
-  { label: "Booking", href: "#booking" },
-  { label: "Contact Us", href: "#contact" },
+  { label: "Home", href: "/#" },
+  { label: "About Us", href: "/about" },
+  { label: "Amenities", href: "/amenities" },
+  { label: "Activities", href: "/activities" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "Booking", href: "/booking" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 export default function Navbar() {
@@ -32,7 +32,7 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#354E41] shadow-md">
       <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
         {/* Logo */}
-        <Link href="#home" className="flex items-center">
+        <Link href="/" className="flex items-center">
           <Image
             src="/vihara-logo.svg"
             alt="Vihara The Courtyard"
@@ -51,7 +51,7 @@ export default function Navbar() {
                 className={`text-sm tracking-wide font-medium transition-colors duration-300 ${
                   active === link.href
                     ? "text-[#D9B59D]"
-                    : "text-white hover:text-[#D9B59D]"
+                    : "text-[#DCD7CD] hover:text-[#D9B59D]"
                 }`}
               >
                 {link.label}
