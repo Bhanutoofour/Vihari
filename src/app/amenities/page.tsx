@@ -15,13 +15,6 @@ const INTERIOR_IMG =
 const ARCH_IMG =
   "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80";
 
-/* ─────────────────────────────────────────────────────
-   ICON CONTAINER STYLES (from Figma)
-   
-   Accommodation & Services:  64×64 circle, bg #354E41, SVG stroke #D9B59D
-   Outdoor & Kitchen:         64×64 circle, bg #D9B59D, SVG stroke #354E41
-───────────────────────────────────────────────────── */
-
 const IconContainer = ({
   children,
   bg,
@@ -44,10 +37,6 @@ const IconContainer = ({
     {children}
   </div>
 );
-
-/* ─────────────────────────────────────────────────────
-   ACCOMMODATION ICONS  — container bg #354E41, SVG stroke #D9B59D
-───────────────────────────────────────────────────── */
 
 const IconBedroom = () => (
   <svg
@@ -176,10 +165,6 @@ const IconTV = () => (
     />
   </svg>
 );
-
-/* ─────────────────────────────────────────────────────
-   OUTDOOR ICONS  — container bg #D9B59D, SVG stroke #354E41
-───────────────────────────────────────────────────── */
 
 const IconPool = () => (
   <svg
@@ -358,10 +343,6 @@ const IconCar = () => (
   </svg>
 );
 
-/* ─────────────────────────────────────────────────────
-   SERVICES ICONS  — container bg #354E41, SVG stroke #D9B59D
-───────────────────────────────────────────────────── */
-
 const IconPeople = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -504,10 +485,6 @@ const IconStar = () => (
   </svg>
 );
 
-/* ─────────────────────────────────────────────────────
-   KITCHEN ICONS  — container bg #354E41, SVG stroke #D9B59D
-───────────────────────────────────────────────────── */
-
 const IconPot = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -603,10 +580,6 @@ const IconWater = () => (
     />
   </svg>
 );
-
-/* ─────────────────────────────────────────────────────
-   DATA
-───────────────────────────────────────────────────── */
 
 const accommodationData = [
   {
@@ -723,10 +696,6 @@ const additional = [
   "Fire extinguishers",
 ];
 
-/* ─────────────────────────────────────────────────────
-   CARD COMPONENTS
-───────────────────────────────────────────────────── */
-
 type CardItem = {
   icon: React.ReactNode;
   bg: "#354E41" | "#D9B59D";
@@ -734,7 +703,6 @@ type CardItem = {
   desc: string;
 };
 
-// White card (used for Accommodation, Services, Kitchen on light backgrounds)
 function WhiteCard({ icon, bg, title, desc }: CardItem) {
   return (
     <div className="bg-white p-8 rounded-2xl">
@@ -745,7 +713,6 @@ function WhiteCard({ icon, bg, title, desc }: CardItem) {
   );
 }
 
-// Dark card (used for Outdoor on the green section)
 function DarkCard({ icon, bg, title, desc }: CardItem) {
   return (
     <div className="bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all duration-300">
@@ -772,14 +739,10 @@ function SectionHeading({
   );
 }
 
-/* ─────────────────────────────────────────────────────
-   PAGE
-───────────────────────────────────────────────────── */
-
 export default function AmenitiesPage() {
   return (
     <div className="bg-white overflow-x-hidden">
-      {/* ── HERO ── */}
+      {/* HERO */}
       <section
         className="relative flex flex-col items-center justify-center text-center overflow-hidden"
         style={{ height: "52vh", minHeight: "320px" }}
@@ -809,13 +772,13 @@ export default function AmenitiesPage() {
         </div>
       </section>
 
-      {/* ── INTRO ── */}
+      {/* INTRO */}
       <section className="py-24 bg-white text-center">
-        <div className="max-w-3xl mx-auto px-6">
-          <h2 className="text-4xl text-[#354E41] mb-6">
+        <div className="max-w-7xl mx-auto px-6 md:px-16">
+          <h2 className="font-['Cormorant_Garamond'] font-semibold text-5xl md:text-5xl font-light text-[#354E41] mb-6">
             Thoughtfully Designed for Your Comfort
           </h2>
-          <p className="text-xl text-[#354E41]/80 leading-relaxed">
+          <p className="text-xl text-[#354E41]/80 leading-relaxed max-w-3xl mx-auto">
             At Vihara - The Courtyard, every detail has been carefully
             considered to ensure your stay is comfortable, memorable, and
             effortless. From modern conveniences to serene spaces, we've created
@@ -824,16 +787,15 @@ export default function AmenitiesPage() {
         </div>
       </section>
 
-      {/* ── ACCOMMODATION ── */}
+      {/* ACCOMMODATION */}
       <section className="py-24 bg-[#DCD7CD]">
-        <div className="max-w-6xl mx-auto px-6 md:px-8">
-          <SectionHeading title="Accommodation" />
+        <div className="max-w-7xl mx-auto px-6 md:px-16">
+          <SectionHeading title=<b>Accommodation </b> />
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
             {accommodationData.map((a) => (
               <WhiteCard key={a.title} {...a} />
             ))}
           </div>
-          {/* Image showcase */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
               {
@@ -868,9 +830,9 @@ export default function AmenitiesPage() {
         </div>
       </section>
 
-      {/* ── OUTDOOR SPACES ── */}
+      {/* OUTDOOR SPACES */}
       <section className="bg-[#354E41] pt-24 pb-0">
-        <div className="max-w-6xl mx-auto px-6 md:px-8">
+        <div className="max-w-7xl mx-auto px-6 md:px-16">
           <SectionHeading title="Outdoor Spaces" light />
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-20">
             {outdoorData.map((a) => (
@@ -878,7 +840,6 @@ export default function AmenitiesPage() {
             ))}
           </div>
         </div>
-        {/* Full-width pool banner — flush to section bottom */}
         <div className="relative w-full" style={{ height: "420px" }}>
           <img
             src={POOL_IMG}
@@ -887,7 +848,7 @@ export default function AmenitiesPage() {
           />
           <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center px-6">
             <h2
-              className="text-4xl md:text-5xl text-white mb-4 italic"
+              className="font-['Cormorant_Garamond'] font-semibold text-5xl md:text-6xl font-light text-white mb-4 italic"
               style={{ fontFamily: "serif" }}
             >
               The Heart of the Courtyard
@@ -900,10 +861,10 @@ export default function AmenitiesPage() {
         </div>
       </section>
 
-      {/* ── SERVICES & SUPPORT ── */}
+      {/* SERVICES & SUPPORT */}
       <section className="py-24 bg-[#DCD7CD]">
-        <div className="max-w-6xl mx-auto px-6 md:px-8">
-          <SectionHeading title="Services & Support" />
+        <div className="max-w-7xl mx-auto px-6 md:px-16">
+          <SectionHeading title=<b>Services & Support</b> />
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             {servicesData.map((a) => (
               <WhiteCard key={a.title} {...a} />
@@ -912,10 +873,10 @@ export default function AmenitiesPage() {
         </div>
       </section>
 
-      {/* ── KITCHEN & DINING ── */}
+      {/* KITCHEN & DINING */}
       <section className="py-24 bg-white">
-        <div className="max-w-6xl mx-auto px-6 md:px-8">
-          <SectionHeading title="Kitchen & Dining" />
+        <div className="max-w-7xl mx-auto px-6 md:px-16">
+          <SectionHeading title=<b> Kitchen & Dining </b> />
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {kitchenData.map((a) => (
               <WhiteCard key={a.title} {...a} />
@@ -924,19 +885,18 @@ export default function AmenitiesPage() {
         </div>
       </section>
 
-      {/* ── ADDITIONAL FEATURES ── */}
+      {/* ADDITIONAL FEATURES */}
       <section className="py-24 bg-[#354E41]">
-        <div className="max-w-5xl mx-auto px-6 md:px-8">
-          <h2 className="text-4xl text-white mb-12 text-center">
+        <div className="max-w-7xl mx-auto px-6 md:px-16">
+          <h2 className="text-4xl text-white mb-12 font-semibold text-center">
             Additional Features
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {additional.map((f) => (
               <div
                 key={f}
-                className="flex items-center gap-4 bg-white/5 border border-white/10 px-6 py-4 rounded-x1"
+                className="flex items-center gap-4 bg-white/5 border border-white/10 px-6 py-4 rounded-xl"
               >
-                {/* Dark bullet point */}
                 <span
                   className="flex-shrink-0 rounded-full bg-[#354E41] border-2 border-[#DCD7CD]"
                   style={{ width: 10, height: 10 }}
@@ -948,14 +908,14 @@ export default function AmenitiesPage() {
         </div>
       </section>
 
-      {/* ── CTA ── */}
+      {/* CTA */}
       <section className="py-24 bg-[#DCD7CD] text-center">
-        <div className="max-w-2xl mx-auto px-6">
-          <h2 className="text-4xl text-[#354E41] mb-6">
+        <div className="max-w-7xl mx-auto px-6 md:px-16">
+          <h2 className="text-5xl font-semibold text-[#354E41] mb-6">
             Ready to Experience Vihara?
           </h2>
           <p
-            className="text-xl text-[#354E41]/80 mb-10 italic"
+            className="text-xl text-[#354E41]/80 mb-10 italic max-w-2xl mx-auto"
             style={{ fontFamily: "serif" }}
           >
             Book your stay and enjoy all these amenities in the comfort of your

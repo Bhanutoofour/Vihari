@@ -87,14 +87,14 @@ export default function Hero() {
                   stroke="#D9B59D"
                   strokeWidth="2.33333"
                   strokeLinecap="round"
-                  stroke-linejoin="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M14 15.1667C15.933 15.1667 17.5 13.5997 17.5 11.6667C17.5 9.73369 15.933 8.16669 14 8.16669C12.067 8.16669 10.5 9.73369 10.5 11.6667C10.5 13.5997 12.067 15.1667 14 15.1667Z"
                   stroke="#D9B59D"
                   strokeWidth="2.33333"
                   strokeLinecap="round"
-                  stroke-linejoin="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             }
@@ -116,30 +116,30 @@ export default function Hero() {
                 <path
                   d="M18.6666 24.5V22.1667C18.6666 20.929 18.175 19.742 17.2998 18.8668C16.4246 17.9917 15.2377 17.5 14 17.5H6.99998C5.7623 17.5 4.57532 17.9917 3.70015 18.8668C2.82498 19.742 2.33331 20.929 2.33331 22.1667V24.5"
                   stroke="#D9B59D"
-                  stroke-width="2.33333"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2.33333"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M10.5 12.8333C13.0773 12.8333 15.1666 10.744 15.1666 8.16667C15.1666 5.58934 13.0773 3.5 10.5 3.5C7.92265 3.5 5.83331 5.58934 5.83331 8.16667C5.83331 10.744 7.92265 12.8333 10.5 12.8333Z"
                   stroke="#D9B59D"
-                  stroke-width="2.33333"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2.33333"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M25.6667 24.5V22.1667C25.6659 21.1327 25.3218 20.1282 24.6883 19.311C24.0548 18.4938 23.1678 17.9102 22.1667 17.6517"
                   stroke="#D9B59D"
-                  stroke-width="2.33333"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2.33333"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M18.6667 3.65167C19.6705 3.90869 20.5602 4.49249 21.1956 5.31103C21.831 6.12958 22.1758 7.13631 22.1758 8.17251C22.1758 9.2087 21.831 10.2154 21.1956 11.034C20.5602 11.8525 19.6705 12.4363 18.6667 12.6933"
                   stroke="#D9B59D"
-                  stroke-width="2.33333"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2.33333"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             }
@@ -161,30 +161,30 @@ export default function Hero() {
                 <path
                   d="M9.33331 2.33331V6.99998"
                   stroke="#D9B59D"
-                  stroke-width="2.33333"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2.33333"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M18.6667 2.33331V6.99998"
                   stroke="#D9B59D"
-                  stroke-width="2.33333"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2.33333"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M22.1667 4.66669H5.83333C4.54467 4.66669 3.5 5.71136 3.5 7.00002V23.3334C3.5 24.622 4.54467 25.6667 5.83333 25.6667H22.1667C23.4553 25.6667 24.5 24.622 24.5 23.3334V7.00002C24.5 5.71136 23.4553 4.66669 22.1667 4.66669Z"
                   stroke="#D9B59D"
-                  stroke-width="2.33333"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2.33333"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M3.5 11.6667H24.5"
                   stroke="#D9B59D"
-                  stroke-width="2.33333"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2.33333"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             }

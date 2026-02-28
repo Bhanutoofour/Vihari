@@ -4,11 +4,14 @@ import Footer from "@/components/layout/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Vihara – The Courtyard | Private Estate near Hyderabad",
+  title: "Vihara Courtyard Retreat Hyderabad | Private Events & Stays",
   description:
-    "A private courtyard estate designed for intimate celebrations, gatherings and slow stays. Built with terracotta walls, open skies and calm architecture.",
+    "Vihara is a peaceful courtyard retreat in Hyderabad offering curated wellness retreats, creative gatherings and slow-living experiences in a serene, inspiring space.",
   keywords:
     "vihara, courtyard, hyderabad, staycation, private events, celebrations, kothur",
+  icons: {
+    icon: "/icon.png",
+  },
 };
 
 export default function RootLayout({

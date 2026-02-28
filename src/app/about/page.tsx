@@ -5,18 +5,12 @@ export const metadata: Metadata = {
   description: "Learn about Vihara - The Courtyard.",
 };
 
-const HERO_IMG =
-  "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1600&q=80";
-const IMG_BLUEPRINT =
-  "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=300&q=80";
-const IMG_WATERFALL =
-  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80";
-const IMG_GARDEN =
-  "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80";
-const IMG_POOL =
-  "https://images.unsplash.com/photo-1540541338287-41700207dee6?w=600&q=80";
-const IMG_YOGA =
-  "https://images.unsplash.com/photo-1545389336-cf090694435e?w=600&q=80";
+const HERO_IMG = "/about1.webp";
+const IMG_BLUEPRINT = "about.png";
+const IMG_WATERFALL = "interior.png";
+const IMG_GARDEN = "opensk.png";
+const IMG_POOL = "ramb.png";
+const IMG_YOGA = "ac.webp";
 
 const amenities = [
   "Traditional Kerala Architecture",
@@ -39,7 +33,7 @@ export default function AboutPage() {
       {/* HERO */}
       <section
         className="relative flex flex-col items-center justify-center text-center overflow-hidden"
-        style={{ height: "52vh", minHeight: "320px" }}
+        style={{ height: "60vh", minHeight: "360px" }}
       >
         <div
           className="absolute inset-0 bg-cover bg-center"
@@ -62,17 +56,17 @@ export default function AboutPage() {
       </section>
 
       {/* OUR STORY */}
-      <section className="py-24 bg-[#DCD7CD]">
-        <div className="max-w-6xl mx-auto px-6 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-14 items-start">
+      <section className="py-16 bg-[#DCD7CD]">
+        <div className="max-w-7xl mx-auto px-6 md:px-16 grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
           <div>
-            <div className="w-24 h-20 overflow-hidden mb-8 opacity-80">
+            <div className="w-48 h-32 overflow-hidden mb-6 opacity-80 rounded-[16px]">
               <img
-                src={IMG_BLUEPRINT}
+                src="/about.png"
                 alt="blueprint"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-fullr"
               />
             </div>
-            <h2 className="text-3xl md:text-4xl text-[#354E41] mb-6">
+            <h2 className="font-['Cormorant_Garamond'] font-semibold text-5xl md:text-6xl font-light text-[#354E41] mb-4">
               Our Story
             </h2>
             <p className="text-lg text-[#354E41]/80 mb-4 leading-relaxed">
@@ -96,9 +90,12 @@ export default function AboutPage() {
               unwind and reconnect with nature.
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {[IMG_WATERFALL, IMG_GARDEN, IMG_POOL, IMG_YOGA].map((src, i) => (
-              <div key={i} className="aspect-[4/3] overflow-hidden">
+              <div
+                key={i}
+                className="aspect-[4/3] overflow-hidden rounded-[16px]"
+              >
                 <img
                   src={src}
                   alt={`vihara-${i}`}
@@ -110,22 +107,22 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* OUR VALUES — with Figma SVGs */}
-      <section className="py-24 bg-white text-center">
-        <div className="max-w-5xl mx-auto px-6 md:px-8">
-          <h2 className="text-3xl md:text-4xl text-[#354E41] mb-4">
+      {/* OUR VALUES */}
+      <section className="py-16 bg-white text-center">
+        <div className="max-w-7xl mx-auto px-6 md:px-16">
+          <h2 className="font-['Cormorant_Garamond'] font-semibold text-5xl md:text-6xl font-light text-[#354E41] mb-3">
             Our Values
           </h2>
           <p
-            className="text-lg text-[#354E41]/80 mb-16 max-w-2xl mx-auto italic"
+            className="text-lg text-[#354E41]/80 mb-12 max-w-3xl mx-auto italic"
             style={{ fontFamily: "serif" }}
           >
             The principles that guide us in creating your perfect staycation
             experience
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {/* 1 — Authentic Experience — Heart SVG */}
-            <div className="bg-[#DCD7CD]/40 p-8 flex flex-col items-center text-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+            {/* 1 — Authentic Experience */}
+            <div className="bg-[#DCD7CD]/40 p-6 flex flex-col rounded-[16px] items-center text-center">
               <div
                 style={{
                   display: "flex",
@@ -154,17 +151,17 @@ export default function AboutPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl text-[#354E41] mt-6 mb-3">
+              <h3 className="text-xl text-[#354E41] mt-5 mb-2">
                 Authentic Experience
               </h3>
-              <p className="text-[#354E41]/70 leading-relaxed">
+              <p className="text-[#354E41]/70 leading-relaxed text-sm">
                 We preserve Kerala's traditional charm while offering modern
                 comfort
               </p>
             </div>
 
-            {/* 2 — Sustainable Living — Leaf SVG */}
-            <div className="bg-[#DCD7CD]/40 p-8 flex flex-col items-center text-center">
+            {/* 2 — Sustainable Living */}
+            <div className="bg-[#DCD7CD]/40 p-6 flex flex-col items-center rounded-[16px] text-center">
               <div
                 style={{
                   display: "flex",
@@ -200,17 +197,17 @@ export default function AboutPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl text-[#354E41] mt-6 mb-3">
+              <h3 className="text-xl text-[#354E41] mt-5 mb-2">
                 Sustainable Living
               </h3>
-              <p className="text-[#354E41]/70 leading-relaxed">
+              <p className="text-[#354E41]/70 leading-relaxed text-sm">
                 Eco-friendly practices that respect and nurture our natural
                 surroundings
               </p>
             </div>
 
-            {/* 3 — Warm Hospitality — People SVG */}
-            <div className="bg-[#DCD7CD]/40 p-8 flex flex-col items-center text-center">
+            {/* 3 — Warm Hospitality */}
+            <div className="bg-[#DCD7CD]/40 p-6 flex flex-col items-center rounded-[16px] text-center">
               <div
                 style={{
                   display: "flex",
@@ -260,16 +257,16 @@ export default function AboutPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl text-[#354E41] mt-6 mb-3">
+              <h3 className="text-xl text-[#354E41] mt-5 mb-2">
                 Warm Hospitality
               </h3>
-              <p className="text-[#354E41]/70 leading-relaxed">
+              <p className="text-[#354E41]/70 leading-relaxed text-sm">
                 Personalized service that makes every guest feel at home
               </p>
             </div>
 
-            {/* 4 — Quality Excellence — Medal SVG */}
-            <div className="bg-[#DCD7CD]/40 p-8 flex flex-col items-center text-center">
+            {/* 4 — Quality Excellence */}
+            <div className="bg-[#DCD7CD]/40 p-6 flex flex-col items-center rounded-[16px] text-center">
               <div
                 style={{
                   display: "flex",
@@ -305,10 +302,10 @@ export default function AboutPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl text-[#354E41] mt-6 mb-3">
+              <h3 className="text-xl text-[#354E41] mt-5 mb-2">
                 Quality Excellence
               </h3>
-              <p className="text-[#354E41]/70 leading-relaxed">
+              <p className="text-[#354E41]/70 leading-relaxed text-sm">
                 Commitment to the highest standards in accommodation and
                 amenities
               </p>
@@ -318,13 +315,13 @@ export default function AboutPage() {
       </section>
 
       {/* AMENITIES & FEATURES */}
-      <section className="py-24 bg-[#354E41] text-center">
-        <div className="max-w-5xl mx-auto px-6 md:px-8">
-          <h2 className="text-3xl md:text-4xl text-white mb-4">
+      <section className="py-16 bg-[#354E41] text-center">
+        <div className="max-w-7xl mx-auto px-6 md:px-16">
+          <h2 className="font-['Cormorant_Garamond'] font-semibold text-5xl md:text-6xl font-light text-white mb-3">
             Amenities &amp; Features
           </h2>
           <p
-            className="text-lg text-white/70 mb-16 italic"
+            className="text-lg text-white/70 mb-12 italic"
             style={{ fontFamily: "serif" }}
           >
             Everything you need for a comfortable and memorable stay
@@ -333,7 +330,7 @@ export default function AboutPage() {
             {amenities.map((a) => (
               <div
                 key={a}
-                className="border border-white/20 text-[#DCD7CD] py-4 px-5 hover:bg-white/10 hover:border-white/40 transition-all duration-200"
+                className="border border-white/20 rounded-[16px] text-[#DCD7CD] py-3 px-4 hover:bg-white/10 hover:border-white/40 transition-all duration-200 text-sm"
               >
                 {a}
               </div>
@@ -343,19 +340,19 @@ export default function AboutPage() {
       </section>
 
       {/* OUR LOCATION */}
-      <section className="py-24 bg-[#DCD7CD] text-center">
-        <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl text-[#354E41] mb-4">
+      <section className="py-16 bg-[#DCD7CD] text-center">
+        <div className="max-w-7xl mx-auto px-6 md:px-16">
+          <h2 className="font-['Cormorant_Garamond'] font-semibold text-5xl md:text-6xl font-light text-[#354E41] mb-3">
             Our Location
           </h2>
           <p
-            className="text-lg text-[#354E41]/80 mb-12 italic"
+            className="text-lg text-[#354E41]/80 mb-10 italic"
             style={{ fontFamily: "serif" }}
           >
             Nestled in the peaceful outskirts of Hyderabad, easily accessible
             yet far from the city's chaos
           </p>
-          <div className="max-w-lg mx-auto bg-[#354E41] px-10 py-10 text-center">
+          <div className="max-w-2xl mx-auto bg-[#354E41] px-12 py-10 rounded-[16px] text-center">
             <p className="text-xl text-white mb-2">Vihara - The Courtyard</p>
             <p className="text-lg text-[#DCD7CD]/80 mb-2">
               Hyderabad Outskirts, Telangana
