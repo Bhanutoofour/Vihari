@@ -862,24 +862,53 @@ export default function AmenitiesPage() {
       </section>
 
       {/* SERVICES & SUPPORT */}
-      <section className="py-24 bg-[#DCD7CD]">
+      {/* SERVICES & SUPPORT */}
+      <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-16">
-          <SectionHeading title="Services & Support" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <h2 className="text-4xl md:text-5xl font-semibold text-[#354E41] text-center mb-16">
+            Services & Support
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
             {servicesData.map((a) => (
-              <WhiteCard key={a.title} {...a} />
+              <div
+                key={a.title}
+                className="bg-[#DCD7CD] p-8 rounded-2xl shadow-[0_10px_25px_rgba(0,0,0,0.08)] hover:shadow-[0_14px_35px_rgba(0,0,0,0.12)] transition-all duration-300"
+              >
+                <IconContainer bg={a.bg}>{a.icon}</IconContainer>
+
+                <h3 className="text-lg font-medium text-[#354E41] mt-6 mb-3">
+                  {a.title}
+                </h3>
+
+                <p className="text-[#354E41]/70 leading-relaxed">{a.desc}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* KITCHEN & DINING */}
-      <section className="py-24 bg-white">
+      <section className="py-20 bg-[#DCD7CD]">
         <div className="max-w-7xl mx-auto px-6 md:px-16">
-          <SectionHeading title="Kitchen & Dining" />
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <h2 className="text-4xl md:text-5xl font-semibold text-[#354E41] text-center mb-16">
+            Kitchen & Dining
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {kitchenData.map((a) => (
-              <WhiteCard key={a.title} {...a} />
+              <div
+                key={a.title}
+                className="bg-white p-8 rounded-2xl shadow-[0_10px_25px_rgba(0,0,0,0.08)]"
+              >
+                <IconContainer bg={a.bg}>{a.icon}</IconContainer>
+
+                <h3 className="text-lg font-medium text-[#354E41] mt-6 mb-3">
+                  {a.title}
+                </h3>
+
+                <p className="text-[#354E41]/70 leading-relaxed">{a.desc}</p>
+              </div>
             ))}
           </div>
         </div>

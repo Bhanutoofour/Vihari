@@ -2,12 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 const quickLinks = [
-  "Home",
-  "About Us",
-  "Activities",
-  "Gallery",
-  "Booking",
-  "Contact",
+  { name: "Home", href: "/" },
+  { name: "About Us", href: "/about" },
+  { name: "Activities", href: "/activities" },
+  { name: "Gallery", href: "/gallery" },
+  { name: "Booking", href: "/booking" },
+  { name: "Contact", href: "/contact" },
 ];
 
 export default function Footer() {
@@ -38,12 +38,12 @@ export default function Footer() {
             </p>
             <ul className="space-y-3">
               {quickLinks.map((link) => (
-                <li key={link}>
+                <li key={link.name}>
                   <Link
-                    href={`#${link.toLowerCase().replace(" ", "-")}`}
+                    href={link.href}
                     className="font-['Jost'] text-sm text-[#DCD7CD] opacity-70 hover:opacity-100 hover:text-[#D9B59D] transition-all duration-200"
                   >
-                    {link}
+                    {link.name}
                   </Link>
                 </li>
               ))}
@@ -62,11 +62,15 @@ export default function Footer() {
                 Near Hyderabad International Airport
               </p>
               <p className="font-['Jost'] text-sm text-[#DCD7CD] opacity-70">
-                +91 9032169777
+                <a href="tel:+919032169777">+91 9032169777</a>
               </p>
               <p className="font-['Jost'] text-sm text-[#DCD7CD] opacity-70">
-                viharahospitality@gmail.com
+                <a href="mailto:viharahospitality@gmail.com">
+                  viharahospitality@gmail.com
+                </a>
               </p>
+
+              {/* Social */}
               <div className="flex gap-4 pt-2">
                 <a
                   href="https://instagram.com/viharathecourtyard"
@@ -92,6 +96,7 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Bottom */}
         <div className="border-t border-[rgba(255,255,255,0.1)] pt-8 text-center">
           <p className="font-['Jost'] text-xs text-[#DCD7CD] opacity-40">
             © 2026 Vihara - The Courtyard. All rights reserved.
