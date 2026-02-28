@@ -790,7 +790,7 @@ export default function AmenitiesPage() {
       {/* ACCOMMODATION */}
       <section className="py-24 bg-[#DCD7CD]">
         <div className="max-w-7xl mx-auto px-6 md:px-16">
-          <SectionHeading title=<b>Accommodation </b> />
+          <SectionHeading title="Accommodation" />
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
             {accommodationData.map((a) => (
               <WhiteCard key={a.title} {...a} />
@@ -864,7 +864,7 @@ export default function AmenitiesPage() {
       {/* SERVICES & SUPPORT */}
       <section className="py-24 bg-[#DCD7CD]">
         <div className="max-w-7xl mx-auto px-6 md:px-16">
-          <SectionHeading title=<b>Services & Support</b> />
+          <SectionHeading title="Services & Support" />
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             {servicesData.map((a) => (
               <WhiteCard key={a.title} {...a} />
@@ -876,7 +876,7 @@ export default function AmenitiesPage() {
       {/* KITCHEN & DINING */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-16">
-          <SectionHeading title=<b> Kitchen & Dining </b> />
+          <SectionHeading title="Kitchen & Dining" />
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {kitchenData.map((a) => (
               <WhiteCard key={a.title} {...a} />

@@ -470,7 +470,6 @@ export default function ActivitiesPage() {
                 key={d.time}
                 className="bg-[rgba(255,255,255,0.08)] border border-white/10 p-8"
               >
-                <div className="text-2xl mb-3">{d.icon}</div>
                 <h3
                   className="text-white font-normal mb-2"
                   style={{
