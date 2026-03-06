@@ -34,9 +34,9 @@ const featured = [
         />
       </svg>
     ),
-    title: "Waterfall Experience",
-    desc: "Enjoy the soothing sounds and refreshing mist of our natural waterfall. Perfect for meditation and relaxation.",
-    img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80",
+    title: "Statue of Equality",
+    desc: "The 216-foot Statue of Equality in Hyderabad commemorates 11th-century saint Sri Ramanujacharya, promoting equality, social justice, and inclusion.",
+    img: "/stu.png",
   },
   {
     icon: (
@@ -87,7 +87,7 @@ const featured = [
     ),
     title: "Swimming Pool",
     desc: "Take a refreshing dip in our infinity pool surrounded by LUCH greens trees and tropical gardens.",
-    img: "https://images.unsplash.com/photo-1540541338287-41700207dee6?w=600&q=80",
+    img: "/sp.png",
   },
   {
     icon: (
@@ -166,7 +166,7 @@ const featured = [
     ),
     title: "farm Grove",
     desc: "Stroll through our lush farm grove and experience the authentic tropical ambiance of farms.",
-    img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
+    img: "fr.png",
   },
   {
     icon: (
@@ -311,6 +311,51 @@ const featured = [
     desc: "Unwind with snooker and curated indoor games in a calm, comfortable setting. Game equipment is available upon request.",
     img: "https://images.unsplash.com/photo-1761591847985-2184afaab747?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHNub29rZXJzfGVufDB8fDB8fHww",
   },
+  {
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="32"
+        height="32"
+        viewBox="0 0 32 32"
+        fill="none"
+      >
+        {/* Logs */}
+        <path
+          d="M4 26L14 20"
+          stroke="#D9B59D"
+          strokeWidth="2.66667"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M28 26L18 20"
+          stroke="#D9B59D"
+          strokeWidth="2.66667"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M8 28L16 22L24 28"
+          stroke="#D9B59D"
+          strokeWidth="2.66667"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        {/* Main flame */}
+        <path
+          d="M16 22C16 22 10 17 12 11C12 11 13 14 15 14C15 14 13 10 15 6C15 6 16 10 18 11C18 11 17 8 19 7C19 7 22 12 20 16C20 16 21 14 22 14C24 18 20 22 16 22Z"
+          stroke="#D9B59D"
+          strokeWidth="2.66667"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+    title: "BonFire",
+    desc: "End your day with warmth, laughter, and the magical glow of a crackling bonfire, Sip, stargaze, and soak in the warmth of our curated evening bonfire experience",
+    img: "bf.png",
+  },
 ];
 
 const moreActivities = [
@@ -408,39 +453,6 @@ export default function ActivitiesPage() {
                     {a.desc}
                   </p>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* MORE TO EXPLORE */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto rounded-[16px]px-6 md:px-16">
-          <div className="text-center mb-12">
-            <h2
-              className="font-semibold text-[#354E41] mb-2"
-              style={{
-                fontFamily: "var(--font-dm-serif, serif)",
-                fontSize: "clamp(24px, 3vw, 38px)",
-              }}
-            >
-              More To Explore
-            </h2>
-            <p className="text-sm text-[#888] italic">
-              Additional activities and services available during your stay
-            </p>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 ">
-            {moreActivities.map((a) => (
-              <div
-                key={a.name}
-                className="bg-[#F5F1EA] p-5 hover:bg-[#EDE8DC] rounded-[16px] transition-colors"
-              >
-                <p className="text-sm font-medium text-[#1a1a1a] mb-1">
-                  {a.name}
-                </p>
-                <p className="text-xs text-[#2D4A3E] font-medium">{a.status}</p>
               </div>
             ))}
           </div>

@@ -7,7 +7,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex flex-col justify-center items-center text-center overflow-hidden "
+      className="relative min-h-screen flex flex-col justify-center items-center text-center overflow-hidden"
     >
       {/* Background */}
       <div className="absolute inset-0 bg-cover bg-center scale-105 bg-no-repeat bg-[url('/hero-bg.jpg')]" />
@@ -16,7 +16,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-[#354E41]/90 via-[#354E41]/60 to-black/40" />
 
       {/* Content */}
-      <div className="relative z-10 px-6 max-w-3xl mx-auto">
+      <div className="relative z-10 px-6 max-w-3xl mx-auto w-full">
         <p className="text-[#D9B59D] text-sm tracking-[0.25em] uppercase mb-3 animate-fadeInUp delay-1">
           Welcome to
         </p>
@@ -45,13 +45,13 @@ export default function Hero() {
         </p>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fadeInUp delay-4 ">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fadeInUp delay-4">
           <Button href="#booking">Reserve Your Stay</Button>
 
           <a
             href="/brochure.pdf"
             download
-            className="px-8 py-3 border border-white text-white text-sm tracking-widest uppercase hover:bg-white hover:text-[#354E41] transition-all duration-300 rounded-[16px] flex items-center gap-2 justify-center"
+            className="w-full sm:w-auto px-8 py-3 border border-white text-white text-sm tracking-widest uppercase hover:bg-white hover:text-[#354E41] transition-all duration-300 rounded-[16px] flex items-center gap-2 justify-center"
           >
             Download Brochure
             <svg
@@ -72,7 +72,7 @@ export default function Hero() {
 
       {/* Bottom Info Bar */}
       <div className="absolute bottom-0 left-0 right-0 bg-[#354E41]/90 border-t border-[#D9B59D]/30 animate-fadeInUp delay-4">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex flex-col sm:flex-row justify-center items-center gap-6 sm:gap-12">
+        <div className="max-w-4xl mx-auto px-6 py-5 flex flex-col sm:flex-row justify-center items-center gap-5 sm:gap-12">
           <InfoBadge
             icon={
               <svg
@@ -197,10 +197,6 @@ export default function Hero() {
   );
 }
 
-/* -------------------------------- */
-/* Reusable Pieces */
-/* -------------------------------- */
-
 function Divider() {
   return <div className="hidden sm:block w-px h-8 bg-[#D9B59D]/30" />;
 }
@@ -215,65 +211,12 @@ function InfoBadge({
   sub: string;
 }) {
   return (
-    <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-3 text-center sm:text-left max-w-[260px]">
+    <div className="flex flex-row items-center gap-3 text-left w-full sm:w-auto">
       <span className="text-[#D9B59D] flex-shrink-0">{icon}</span>
       <div>
         <p className="text-white text-sm font-medium">{label}</p>
         <p className="text-[#DCD7CD] text-xs opacity-80 leading-snug">{sub}</p>
       </div>
     </div>
-  );
-}
-
-/* -------------------------------- */
-/* Icons */
-/* -------------------------------- */
-
-function PinIcon() {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    >
-      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-      <circle cx="12" cy="10" r="3" />
-    </svg>
-  );
-}
-
-function GuestIcon() {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    >
-      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-      <circle cx="9" cy="7" r="4" />
-      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-    </svg>
-  );
-}
-
-function StarIcon() {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    >
-      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-    </svg>
   );
 }
