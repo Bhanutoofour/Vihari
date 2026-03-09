@@ -4,93 +4,65 @@ import { useState } from "react";
 const HERO_IMG =
   "https://images.unsplash.com/photo-1540541338287-41700207dee6?w=1600&q=80";
 
-const rooms = [
+type BookingType = "staycation" | "event" | "movie";
+
+const staycationPlans = [
   {
-    id: "deluxe",
-    name: "Deluxe Room",
-    guests: "2 Guests",
-    price: 5000,
-    features: [
-      "King Size Bed",
-      "Private Bathroom",
-      "Air Conditioning",
-      "Garden View",
-    ],
+    id: "stay-10",
+    label: "Up to 10 Guests",
+    weekday: 30000,
+    weekend: 35000,
+    tagline: "Ideal for family getaways and intimate gatherings",
   },
   {
-    id: "premium",
-    name: "Premium Suite",
-    guests: "4 Guests",
-    price: 8500,
-    features: ["Two Bedrooms", "Living Area", "Private Balcony", "Pool View"],
+    id: "stay-15",
+    label: "Up to 15 Guests",
+    weekday: 40000,
+    weekend: 48000,
+    tagline: "Perfect for pre-wedding stays and creative escapes",
   },
   {
-    id: "villa",
-    name: "Luxury Villa",
-    guests: "6 Guests",
-    price: 15000,
-    features: [
-      "Three Bedrooms",
-      "Private Kitchen",
-      "Garden Access",
-      "Premium Amenities",
-    ],
-  },
-  {
-    id: "estate",
-    name: "Full Estate",
-    guests: "20 Guests",
-    price: 35000,
-    features: [
-      "Entire Property",
-      "All Facilities",
-      "Personal Chef",
-      "Event Support",
-    ],
+    id: "stay-20",
+    label: "Up to 20 Guests",
+    weekday: 50000,
+    weekend: 60000,
+    tagline: "Ideal for extended family celebrations",
   },
 ];
 
-const packages = [
-  { id: "none", name: "No Package", sub: "Room only", extra: 0, features: [] },
+const eventPlans = [
   {
-    id: "weekend",
-    name: "Weekend Getaway",
-    sub: "2 Days / 1 Night",
-    extra: 0,
-    features: ["Breakfast", "Pool Access", "Wi-Fi"],
+    id: "event-50",
+    label: "Up to 50 Guests",
+    weekday: 60000,
+    weekend: 75000,
+    tagline: "Full courtyard access — Entire Courtyard",
   },
   {
-    id: "wellness",
-    name: "Wellness Retreat",
-    sub: "3 Days / 2 Nights",
-    extra: 3000,
-    features: ["All Meals", "Yoga Sessions", "Spa Treatment", "Nature Walks"],
-  },
-  {
-    id: "celebration",
-    name: "Celebration Package",
-    sub: "Custom",
-    extra: 8000,
-    features: ["Event Setup", "Catering", "Decoration", "Photography"],
+    id: "event-100",
+    label: "Up to 100 Guests",
+    weekday: 80000,
+    weekend: 95000,
+    tagline: "Full courtyard access — Entire Courtyard",
   },
 ];
 
-const addons = [
-  { id: "spa", name: "Spa & Massage", price: 2000 },
-  { id: "chef", name: "Personal Chef", price: 3500 },
-  { id: "photo", name: "Professional Photography", price: 5000 },
-  { id: "transfer", name: "Airport Transfer", price: 1500 },
-  { id: "adventure", name: "Adventure Activities", price: 2500 },
-];
+const moviePlan = {
+  id: "movie-4hr",
+  label: "4 Hours",
+  weekday: 15000,
+  weekend: 25000,
+  tagline: "Complete house access, including common spaces and one bedroom",
+};
 
 export default function BookingPage() {
   const [step, setStep] = useState(1);
-  const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
-  const [selectedPackage, setSelectedPackage] = useState("none");
-  const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
+  const [bookingType, setBookingType] = useState<BookingType>("staycation");
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const [dayType, setDayType] = useState<"weekday" | "weekend">("weekday");
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
-  const [guests, setGuests] = useState(2);
+  const [guests, setGuests] = useState(10);
   const [details, setDetails] = useState({
     name: "",
     email: "",
@@ -99,17 +71,20 @@ export default function BookingPage() {
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const room = rooms.find((r) => r.id === selectedRoom);
-  const pkg = packages.find((p) => p.id === selectedPackage);
-  const addonTotal = addons
-    .filter((a) => selectedAddons.includes(a.id))
-    .reduce((s, a) => s + a.price, 0);
-  const total = (room?.price ?? 0) + (pkg?.extra ?? 0) + addonTotal;
+  const allPlans = [...staycationPlans, ...eventPlans, { ...moviePlan }];
+  const plan = allPlans.find((p) => p.id === selectedPlan);
+  const total = plan
+    ? dayType === "weekday"
+      ? plan.weekday
+      : plan.weekend
+    : 0;
 
-  const toggleAddon = (id: string) =>
-    setSelectedAddons((prev) =>
-      prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id],
-    );
+  const currentPlans =
+    bookingType === "staycation"
+      ? staycationPlans
+      : bookingType === "event"
+        ? eventPlans
+        : [moviePlan];
 
   if (submitted) {
     return (
@@ -123,15 +98,15 @@ export default function BookingPage() {
               fontSize: "32px",
             }}
           >
-            Booking Confirmed!
+            Booking Request Sent!
           </h2>
           <p className="text-sm text-[#666] mb-2">
-            Thank you, <strong>{details.name}</strong>. Your reservation at
-            Vihara has been received.
+            Thank you, <strong>{details.name}</strong>. Your reservation request
+            at Vihara has been received.
           </p>
           <p className="text-sm text-[#666] mb-6">
             We'll contact you at <strong>{details.email}</strong> within 24
-            hours to confirm availability.
+            hours to confirm availability and share payment details.
           </p>
           <a
             href="/"
@@ -173,7 +148,7 @@ export default function BookingPage() {
               fontSize: "clamp(13px, 1.8vw, 18px)",
             }}
           >
-            Reserve your tranquil escape
+            Reserve your tranquil escape at Vihara
           </p>
         </div>
       </section>
@@ -182,9 +157,9 @@ export default function BookingPage() {
       <div className="bg-white border-b border-[#eee] sticky top-[60px] z-40">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-center gap-4">
           {[
-            { n: 1, label: "Room & Package" },
-            { n: 2, label: "Details" },
-            { n: 3, label: "Payment" },
+            { n: 1, label: "Select Package" },
+            { n: 2, label: "Your Details" },
+            { n: 3, label: "Confirm" },
           ].map((s, i) => (
             <div key={s.n} className="flex items-center gap-3">
               {i > 0 && (
@@ -213,22 +188,6 @@ export default function BookingPage() {
         {/* ── STEP 1 ── */}
         {step === 1 && (
           <div className="space-y-10">
-            {/* Check availability bar */}
-            <div className="bg-[#2D4A3E] p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div>
-                <p className="text-white text-sm font-medium flex items-center gap-2">
-                  ℹ Check Availability
-                </p>
-                <p className="text-white/55 text-xs mt-1">
-                  View our availability calendar to see booked dates and select
-                  your preferred dates.
-                </p>
-              </div>
-              <button className="bg-[#B85C38] text-white px-5 py-2.5 text-xs whitespace-nowrap hover:bg-[#c96a40] transition-colors flex items-center gap-2">
-                📅 View Calendar
-              </button>
-            </div>
-
             {/* Dates & Guests */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="bg-white p-4">
@@ -260,7 +219,7 @@ export default function BookingPage() {
                   onChange={(e) => setGuests(+e.target.value)}
                   className="w-full text-sm outline-none border-b border-[#eee] pb-1 bg-transparent"
                 >
-                  {[2, 4, 6, 8, 10, 12, 15, 20].map((n) => (
+                  {[2, 4, 6, 8, 10, 15, 20, 50, 100].map((n) => (
                     <option key={n} value={n}>
                       {n} Guests
                     </option>
@@ -269,57 +228,52 @@ export default function BookingPage() {
               </div>
             </div>
 
-            {/* Rooms */}
+            {/* Weekday / Weekend toggle */}
             <div>
-              <h2
-                className="font-normal text-[#1a1a1a] mb-5"
-                style={{
-                  fontFamily: "var(--font-dm-serif, serif)",
-                  fontSize: "clamp(20px, 2.5vw, 28px)",
-                }}
-              >
-                Select Your Accommodation
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {rooms.map((r) => (
+              <p className="text-xs text-[#888] mb-2 uppercase tracking-widest">
+                Pricing for
+              </p>
+              <div className="flex gap-2">
+                {(["weekday", "weekend"] as const).map((d) => (
                   <button
-                    key={r.id}
-                    onClick={() => setSelectedRoom(r.id)}
-                    className={`text-left p-6 border-2 transition-all bg-white ${selectedRoom === r.id ? "border-[#2D4A3E]" : "border-transparent hover:border-[#2D4A3E]/30"}`}
+                    key={d}
+                    onClick={() => setDayType(d)}
+                    className={`px-5 py-2 text-xs font-medium uppercase tracking-widest border transition-colors ${dayType === d ? "bg-[#2D4A3E] text-white border-[#2D4A3E]" : "bg-white text-[#555] border-[#ddd] hover:border-[#2D4A3E]"}`}
                   >
-                    <div className="flex justify-between items-start mb-1">
-                      <span className="font-medium text-sm text-[#1a1a1a]">
-                        {r.name}
-                      </span>
-                      <span
-                        className="font-normal text-[#B85C38]"
-                        style={{
-                          fontFamily: "var(--font-dm-serif, serif)",
-                          fontSize: "20px",
-                        }}
-                      >
-                        ₹{r.price.toLocaleString()}
-                      </span>
-                    </div>
-                    <p className="text-xs text-[#888] mb-4">
-                      {r.guests} &nbsp;·&nbsp; per night
-                    </p>
-                    <ul className="space-y-1">
-                      {r.features.map((f) => (
-                        <li
-                          key={f}
-                          className="text-xs text-[#555] flex items-center gap-2"
-                        >
-                          <span className="text-[#2D4A3E]">✓</span> {f}
-                        </li>
-                      ))}
-                    </ul>
+                    {d}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Packages */}
+            {/* Booking Type Tabs */}
+            <div>
+              <p className="text-xs text-[#888] mb-3 uppercase tracking-widest">
+                Package Type
+              </p>
+              <div className="flex gap-2 flex-wrap">
+                {(
+                  [
+                    { key: "staycation", label: "Staycation" },
+                    { key: "event", label: "Courtyard Event" },
+                    { key: "movie", label: "Movies & Pre-Wedding" },
+                  ] as { key: BookingType; label: string }[]
+                ).map((t) => (
+                  <button
+                    key={t.key}
+                    onClick={() => {
+                      setBookingType(t.key);
+                      setSelectedPlan(null);
+                    }}
+                    className={`px-5 py-2 text-xs font-medium uppercase tracking-widest border transition-colors ${bookingType === t.key ? "bg-[#2D4A3E] text-white border-[#2D4A3E]" : "bg-white text-[#555] border-[#ddd] hover:border-[#2D4A3E]"}`}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Plan Cards */}
             <div>
               <h2
                 className="font-normal text-[#1a1a1a] mb-5"
@@ -328,75 +282,102 @@ export default function BookingPage() {
                   fontSize: "clamp(20px, 2.5vw, 28px)",
                 }}
               >
-                Choose a Package{" "}
-                <span className="text-[#888] text-sm font-light">
-                  (Optional)
-                </span>
+                {bookingType === "staycation" && "Staycation Packages"}
+                {bookingType === "event" && "Courtyard Event Packages"}
+                {bookingType === "movie" && "Movies & Pre-Wedding"}
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-                {packages.map((p) => (
+
+              {/* Overnight note for events */}
+              {bookingType === "event" && (
+                <div className="bg-[#2D4A3E] px-5 py-4 mb-5 text-white text-xs leading-relaxed">
+                  <span className="text-[#D9B59D] font-medium uppercase tracking-widest">
+                    ★ Overnight Stay Note —{" "}
+                  </span>
+                  Overnight stays with events are strictly limited to a maximum
+                  of 20 guests. This policy applies to all event packages
+                  without exception.
+                </div>
+              )}
+
+              <div
+                className={`grid gap-3 ${currentPlans.length === 1 ? "grid-cols-1 max-w-sm" : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3"}`}
+              >
+                {currentPlans.map((p) => (
                   <button
                     key={p.id}
-                    onClick={() => setSelectedPackage(p.id)}
-                    className={`text-left p-5 border-2 bg-white transition-all ${selectedPackage === p.id ? "border-[#2D4A3E]" : "border-transparent hover:border-[#2D4A3E]/30"}`}
+                    onClick={() => setSelectedPlan(p.id)}
+                    className={`text-left p-6 border-2 transition-all bg-white ${selectedPlan === p.id ? "border-[#2D4A3E]" : "border-transparent hover:border-[#2D4A3E]/30"}`}
                   >
-                    <p className="font-medium text-sm text-[#1a1a1a] mb-1">
-                      {p.name}
+                    <p className="text-xs text-[#888] uppercase tracking-widest mb-3">
+                      {p.label}
                     </p>
-                    <p className="text-xs text-[#888] mb-3">{p.sub}</p>
-                    {p.extra > 0 && (
-                      <p className="text-sm text-[#B85C38] mb-3">
-                        + ₹ {p.extra.toLocaleString()}
-                      </p>
+                    <p
+                      className="font-normal text-[#B85C38] mb-1"
+                      style={{
+                        fontFamily: "var(--font-dm-serif, serif)",
+                        fontSize: "28px",
+                      }}
+                    >
+                      ₹
+                      {(dayType === "weekday"
+                        ? p.weekday
+                        : p.weekend
+                      ).toLocaleString()}
+                    </p>
+                    <p className="text-xs text-[#888] mb-4">
+                      {dayType === "weekday" ? "Weekday rate" : "Weekend rate"}
+                    </p>
+                    <p className="text-xs text-[#555] leading-relaxed">
+                      {p.tagline}
+                    </p>
+                    {selectedPlan === p.id && (
+                      <div className="mt-3 flex items-center gap-1 text-[#2D4A3E] text-xs font-medium">
+                        <span>✓</span> Selected
+                      </div>
                     )}
-                    <ul className="space-y-1">
-                      {p.features.map((f) => (
-                        <li
-                          key={f}
-                          className="text-xs text-[#555] flex items-center gap-2"
-                        >
-                          <span className="text-[#2D4A3E]">✓</span> {f}
-                        </li>
-                      ))}
-                    </ul>
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Add-ons */}
-            <div>
-              <h2
-                className="font-normal text-[#1a1a1a] mb-5"
-                style={{
-                  fontFamily: "var(--font-dm-serif, serif)",
-                  fontSize: "clamp(20px, 2.5vw, 28px)",
-                }}
-              >
-                Enhance Your Stay
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-3">
-                {addons.map((a) => (
-                  <button
-                    key={a.id}
-                    onClick={() => toggleAddon(a.id)}
-                    className={`p-4 border-2 bg-white text-left transition-all ${selectedAddons.includes(a.id) ? "border-[#2D4A3E]" : "border-transparent hover:border-[#2D4A3E]/30"}`}
-                  >
-                    <p className="text-xs font-medium text-[#1a1a1a] mb-1">
-                      {a.name}
-                    </p>
-                    <p className="text-sm text-[#B85C38]">
-                      ₹{a.price.toLocaleString()}
-                    </p>
-                  </button>
-                ))}
-              </div>
+            {/* Info chips */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {[
+                {
+                  label: "Check-in & out",
+                  value: "Check-in: 2:00 PM",
+                  sub: "Check-out: 11:00 AM",
+                },
+                {
+                  label: "Security Deposit",
+                  value: "₹10,000",
+                  sub: "Refundable",
+                },
+                {
+                  label: "Additional Guests",
+                  value: "₹1,500 Weekday",
+                  sub: "₹2,000 Weekend",
+                },
+              ].map((c) => (
+                <div
+                  key={c.label}
+                  className="bg-white border border-[#eee] px-5 py-4 text-center"
+                >
+                  <p className="text-xs text-[#888] uppercase tracking-widest mb-1">
+                    {c.label}
+                  </p>
+                  <p className="text-sm text-[#1a1a1a] font-medium">
+                    {c.value}
+                  </p>
+                  <p className="text-xs text-[#888]">{c.sub}</p>
+                </div>
+              ))}
             </div>
 
             <div className="flex justify-end">
               <button
                 onClick={() => setStep(2)}
-                disabled={!selectedRoom}
+                disabled={!selectedPlan}
                 className="bg-[#2D4A3E] text-white px-10 py-3 text-sm font-medium hover:bg-[#1C3028] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 Continue to Details →
@@ -420,28 +401,30 @@ export default function BookingPage() {
 
             {/* Summary */}
             <div className="bg-[#2D4A3E] p-6 text-white mb-6">
-              <h3 className="text-sm font-medium mb-3 text-[#C4965A]">
+              <h3 className="text-sm font-medium mb-3 text-[#D9B59D] uppercase tracking-widest">
                 Booking Summary
               </h3>
               <div className="space-y-1 text-xs text-white/75">
                 <div className="flex justify-between">
-                  <span>{room?.name}</span>
-                  <span>₹{room?.price.toLocaleString()}/night</span>
+                  <span>{plan?.label}</span>
+                  <span className="capitalize">{dayType} rate</span>
                 </div>
-                {pkg && pkg.extra > 0 && (
+                {checkIn && (
                   <div className="flex justify-between">
-                    <span>{pkg.name}</span>
-                    <span>+ ₹{pkg.extra.toLocaleString()}</span>
+                    <span>Check In</span>
+                    <span>{checkIn}</span>
                   </div>
                 )}
-                {addons
-                  .filter((a) => selectedAddons.includes(a.id))
-                  .map((a) => (
-                    <div key={a.id} className="flex justify-between">
-                      <span>{a.name}</span>
-                      <span>+ ₹{a.price.toLocaleString()}</span>
-                    </div>
-                  ))}
+                {checkOut && (
+                  <div className="flex justify-between">
+                    <span>Check Out</span>
+                    <span>{checkOut}</span>
+                  </div>
+                )}
+                <div className="flex justify-between">
+                  <span>Guests</span>
+                  <span>{guests}</span>
+                </div>
                 <div className="border-t border-white/10 pt-2 mt-2 flex justify-between text-white font-medium text-sm">
                   <span>Total</span>
                   <span>₹{total.toLocaleString()}</span>
@@ -516,7 +499,7 @@ export default function BookingPage() {
                 disabled={!details.name || !details.email || !details.phone}
                 className="bg-[#2D4A3E] text-white px-10 py-3 text-sm font-medium hover:bg-[#1C3028] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                Continue to Payment →
+                Continue to Confirm →
               </button>
             </div>
           </div>
@@ -532,10 +515,9 @@ export default function BookingPage() {
                 fontSize: "clamp(22px, 2.8vw, 34px)",
               }}
             >
-              Payment
+              Confirm Booking
             </h2>
 
-            {/* Final summary */}
             <div className="bg-white p-6 mb-6">
               <h3 className="text-sm font-medium text-[#1a1a1a] mb-4">
                 Final Summary
@@ -546,8 +528,18 @@ export default function BookingPage() {
                   <span>{details.name}</span>
                 </div>
                 <div className="flex justify-between text-[#555]">
-                  <span>Room</span>
-                  <span>{room?.name}</span>
+                  <span>Phone</span>
+                  <span>{details.phone}</span>
+                </div>
+                <div className="flex justify-between text-[#555]">
+                  <span>Package</span>
+                  <span>{plan?.label}</span>
+                </div>
+                <div className="flex justify-between text-[#555]">
+                  <span>Type</span>
+                  <span className="capitalize">
+                    {bookingType} · {dayType}
+                  </span>
                 </div>
                 {checkIn && (
                   <div className="flex justify-between text-[#555]">
@@ -561,6 +553,10 @@ export default function BookingPage() {
                     <span>{checkOut}</span>
                   </div>
                 )}
+                <div className="flex justify-between text-[#555]">
+                  <span>Guests</span>
+                  <span>{guests}</span>
+                </div>
                 <div className="border-t border-[#eee] pt-3 mt-3 flex justify-between font-medium text-[#1a1a1a]">
                   <span>Total Amount</span>
                   <span
