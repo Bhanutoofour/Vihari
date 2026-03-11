@@ -10,10 +10,10 @@ export default function Hero() {
       className="relative min-h-screen flex flex-col justify-center items-center text-center overflow-hidden"
     >
       {/* Background */}
-      <div className="absolute inset-0 bg-cover bg-center scale-105 bg-no-repeat bg-[url('/hero-bg.jpg')]" />
+      <div className="absolute inset-0 bg-cover bg-center  bg-no-repeat bg-[url('/hero.png')]" />
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#354E41]/90 via-[#354E41]/60 to-black/40" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#354E41]/30 via-[#354E41]/50 to-black/30" />
 
       {/* Content */}
       <div className="relative z-10 px-6 max-w-3xl mx-auto w-full">
