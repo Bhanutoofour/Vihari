@@ -795,7 +795,7 @@ export default function AmenitiesPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
               {
-                img: "st1.webp",
+                img: "ct.webp",
                 title: "Private Courtyard Spaces",
                 desc: "Intimate seating areas for relaxation and conversation",
               },
