@@ -27,7 +27,7 @@ export default function Retreats() {
           </p>
 
           <a
-            href="#activities"
+            href="/activities"
             className="inline-flex items-center gap-3 bg-[#D9B59D] text-[#354E41] px-10 py-4 rounded-xl font-medium hover:bg-[#e6c6b1] transition-all duration-300"
           >
             Explore Retreats & Activities

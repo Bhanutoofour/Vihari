@@ -182,13 +182,13 @@ export default function Experience() {
             title="Open Sky Courtyard"
             description="A serene swimming pool surrounded by terracotta walls and ambient lighting"
             imageBg="bg-[#354E41]"
-            bgImage="/opensky.png"
+            bgImage="/opensky.webp"
           />
           <FeatureCard
             title="Modern Architecture"
             description="Contemporary design with traditional terracotta elements and expansive glass"
             imageBg="bg-[#4a6655]"
-            bgImage="as1.png"
+            bgImage="modern.webp"
           />
         </div>
 

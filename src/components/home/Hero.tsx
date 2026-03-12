@@ -10,7 +10,7 @@ export default function Hero() {
       className="relative min-h-screen flex flex-col justify-center items-center text-center overflow-hidden"
     >
       {/* Background */}
-      <div className="absolute inset-0 bg-cover bg-center  bg-no-repeat bg-[url('/hero.png')]" />
+      <div className="absolute inset-0 bg-cover bg-center  bg-no-repeat bg-[url('/hero.webp')]" />
 
       {/* Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#354E41]/30 via-[#354E41]/50 to-black/30" />
@@ -46,7 +46,7 @@ export default function Hero() {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fadeInUp delay-4">
-          <Button href="#booking">Reserve Your Stay</Button>
+          <Button href="/booking">Reserve Your Stay</Button>
 
           <a
             href="/brochure.pdf"
