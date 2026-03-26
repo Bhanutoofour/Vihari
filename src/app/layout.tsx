@@ -1,9 +1,21 @@
-"use client";
-
 import Script from "next/script";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import type { Metadata } from "next";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "Vihara Courtyard Retreat Hyderabad | Private Events & Stays",
+  description:
+    "Vihara is a peaceful courtyard retreat in Hyderabad offering curated wellness retreats, creative gatherings and slow-living experiences in a serene, inspiring space.",
+  keywords:
+    "vihara, courtyard, hyderabad, staycation, private events, celebrations, kothur",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+};
 
 export default function RootLayout({
   children,
@@ -13,7 +25,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -27,12 +38,10 @@ export default function RootLayout({
       </head>
 
       <body>
-        {/* Google Tag */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=AW-17996520116"
           strategy="afterInteractive"
         />
-
         <Script id="google-tag" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
