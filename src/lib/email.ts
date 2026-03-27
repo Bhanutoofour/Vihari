@@ -1,7 +1,9 @@
 const getTransporter = async () => {
   const nodemailer = await import("nodemailer");
   return nodemailer.default.createTransport({
-    service: "gmail",
+    host: process.env.GMAIL_HOST || "smtp-relay.gmail.com",
+    port: parseInt(process.env.GMAIL_PORT || "587"),
+    secure: false,
     auth: {
       user: process.env.GMAIL_USER,
       pass: process.env.GMAIL_APP_PASSWORD,
