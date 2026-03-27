@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import "server-only";
 import { supabaseAdmin } from "@/lib/supabase";
-import {
-  sendGuestBookingConfirmed,
-  sendGuestBookingRejected,
-} from "@/lib/email";
+import { sendGuestBookingConfirmed, sendGuestBookingRejected } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,12 +8,26 @@ export async function POST(req: NextRequest) {
     if (auth !== `Bearer ${process.env.ADMIN_SECRET_TOKEN}`)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const { booking_id, status, admin_notes } = await req.json();
+    const body = await req.json();
+    const { booking_id, status, admin_notes, name, email, phone, check_in, check_out, guests, total_amount, requests } = body;
+
+    // Build update object — only include fields that were sent
+    const updateData: any = {};
+    if (status !== undefined) updateData.status = status;
+    if (admin_notes !== undefined) updateData.admin_notes = admin_notes;
+    if (name !== undefined) updateData.name = name;
+    if (email !== undefined) updateData.email = email;
+    if (phone !== undefined) updateData.phone = phone;
+    if (check_in !== undefined) updateData.check_in = check_in;
+    if (check_out !== undefined) updateData.check_out = check_out || null;
+    if (guests !== undefined) updateData.guests = guests;
+    if (total_amount !== undefined) updateData.total_amount = total_amount;
+    if (requests !== undefined) updateData.requests = requests;
 
     // Update DB
     const { data, error } = await supabaseAdmin
       .from("bookings")
-      .update({ status, admin_notes })
+      .update(updateData)
       .eq("id", booking_id)
       .select()
       .single();
@@ -52,9 +62,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (err: any) {
-    return NextResponse.json(
-      { success: false, error: err.message },
-      { status: 500 },
-    );
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
