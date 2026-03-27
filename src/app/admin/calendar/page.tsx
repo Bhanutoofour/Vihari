@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import { supabaseAdmin } from "@/lib/supabase";
 import { Booking, BookingStatus } from "@/lib/supabase";
 
 const SOURCES = [
@@ -67,21 +66,23 @@ export default function CalendarPage() {
 
   async function fetchBookings() {
     setLoading(true);
-    const startDate = new Date(currentYear, currentMonth, 1)
-      .toISOString()
-      .split("T")[0];
-    const endDate = new Date(currentYear, currentMonth + 1, 0)
-      .toISOString()
-      .split("T")[0];
-
-    const { data, error } = await supabaseAdmin
-      .from("bookings")
-      .select("*")
-      .or(`check_in.lte.${endDate},check_out.gte.${startDate}`)
-      .order("check_in", { ascending: true });
-
-    if (!error && data) {
-      setBookings(data.map((b: Booking) => ({ ...b, source: "vihara" })));
+    try {
+      const res = await fetch(
+        `/api/admin/bookings?year=${currentYear}&month=${currentMonth}`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_TOKEN}`,
+          },
+        },
+      );
+      const data = await res.json();
+      if (data.bookings) {
+        setBookings(
+          data.bookings.map((b: Booking) => ({ ...b, source: "vihara" })),
+        );
+      }
+    } catch (e) {
+      console.error(e);
     }
     setLoading(false);
   }
