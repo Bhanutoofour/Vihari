@@ -1,18 +1,21 @@
-const getTransporter = async () => {
-  const nodemailer = await import("nodemailer");
-  return nodemailer.default.createTransport({
-    host: process.env.GMAIL_HOST || "smtp-relay.gmail.com",
-    port: parseInt(process.env.GMAIL_PORT || "587"),
-    secure: false,
-    auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_APP_PASSWORD,
-    },
-  });
-};
-
+const RESEND_API_KEY = process.env.RESEND_API_KEY!;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL!;
-const FROM = `"Vihara — The Courtyard" <${process.env.GMAIL_USER}>`;
+const FROM = "Vihara — The Courtyard <bookings@vihara.homes>";
+
+async function sendEmail(to: string, subject: string, html: string) {
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${RESEND_API_KEY}`,
+    },
+    body: JSON.stringify({ from: FROM, to, subject, html }),
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Resend error: ${err}`);
+  }
+}
 
 const base = (content: string) => `
 <!DOCTYPE html>
@@ -47,30 +50,20 @@ const row = (label: string, value: string) => `
   </tr>`;
 
 export async function sendGuestBookingReceived(b: {
-  name: string;
-  email: string;
-  booking_ref: string;
-  plan_label: string;
-  booking_type: string;
-  day_type: string;
-  check_in: string;
-  check_out?: string;
-  guests: number;
-  total_amount: number;
-  payment_method: string;
+  name: string; email: string; booking_ref: string;
+  plan_label: string; booking_type: string; day_type: string;
+  check_in: string; check_out?: string; guests: number;
+  total_amount: number; payment_method: string;
 }) {
-  const transporter = await getTransporter();
   const isManual = b.payment_method === "manual";
   const html = base(`
     <h1 style="margin:0 0 6px;font-size:26px;color:#1a1a1a;font-weight:normal;">
       ${isManual ? "Booking Request Received" : "Booking Confirmed!"}
     </h1>
     <p style="margin:0 0 24px;font-size:14px;color:#888;font-family:Arial,sans-serif;">
-      ${
-        isManual
-          ? "We've received your booking request and payment. Our team will verify and confirm within 2–4 hours."
-          : "Your payment was successful. Your booking is confirmed!"
-      }
+      ${isManual
+        ? "We've received your booking request. Our team will verify and confirm within 2–4 hours."
+        : "Your payment was successful. Your booking is confirmed!"}
     </p>
     <div style="background:#2D4A3E;padding:16px 20px;margin-bottom:24px;">
       <p style="margin:0 0 2px;font-size:10px;color:#D9B59D;letter-spacing:3px;text-transform:uppercase;font-family:Arial,sans-serif;">Booking Reference</p>
@@ -86,23 +79,19 @@ export async function sendGuestBookingReceived(b: {
       ${row("Amount", `₹${b.total_amount.toLocaleString()}`)}
       ${row("Payment", b.payment_method === "razorpay" ? "Razorpay (Online)" : "Manual Transfer")}
     </table>
-    ${
-      isManual
-        ? `
+    ${isManual ? `
     <div style="background:#fff8f0;border:1px solid #f0e0c8;padding:16px 20px;margin-bottom:24px;">
       <p style="margin:0 0 4px;font-size:11px;color:#B85C38;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif;">⏳ Pending Verification</p>
       <p style="margin:0;font-size:13px;color:#555;font-family:Arial,sans-serif;line-height:1.6;">
-        Our team will verify your payment screenshot and send a confirmation email within 2–4 hours.
+        Our team will verify your payment screenshot and confirm within 2–4 hours.
       </p>
-    </div>`
-        : `
+    </div>` : `
     <div style="background:#f0f9f4;border:1px solid #c8e8d4;padding:16px 20px;margin-bottom:24px;">
       <p style="margin:0 0 4px;font-size:11px;color:#2D7A4E;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif;">✓ Payment Confirmed</p>
       <p style="margin:0;font-size:13px;color:#555;font-family:Arial,sans-serif;line-height:1.6;">
         Your booking is confirmed. We look forward to welcoming you to Vihara!
       </p>
-    </div>`
-    }
+    </div>`}
     <p style="margin:0;font-size:13px;color:#555;font-family:Arial,sans-serif;line-height:1.6;">
       Track your booking at <a href="https://vihara.homes/my-booking" style="color:#2D4A3E;font-weight:600;">vihara.homes/my-booking</a>
     </p>
@@ -111,32 +100,19 @@ export async function sendGuestBookingReceived(b: {
     </p>
   `);
 
-  await transporter.sendMail({
-    from: FROM,
-    to: b.email,
-    subject: isManual
-      ? `Booking Request Received — ${b.booking_ref} | Vihara`
-      : `Booking Confirmed — ${b.booking_ref} | Vihara`,
-    html,
-  });
+  await sendEmail(
+    b.email,
+    isManual ? `Booking Request Received — ${b.booking_ref} | Vihara` : `Booking Confirmed — ${b.booking_ref} | Vihara`,
+    html
+  );
 }
 
 export async function sendAdminNewBookingAlert(b: {
-  name: string;
-  email: string;
-  phone: string;
-  booking_ref: string;
-  plan_label: string;
-  booking_type: string;
-  day_type: string;
-  check_in: string;
-  check_out?: string;
-  guests: number;
-  total_amount: number;
-  payment_method: string;
-  requests?: string;
+  name: string; email: string; phone: string; booking_ref: string;
+  plan_label: string; booking_type: string; day_type: string;
+  check_in: string; check_out?: string; guests: number;
+  total_amount: number; payment_method: string; requests?: string;
 }) {
-  const transporter = await getTransporter();
   const html = base(`
     <h1 style="margin:0 0 6px;font-size:22px;color:#1a1a1a;font-weight:normal;">
       🔔 New Booking — ${b.booking_ref}
@@ -163,26 +139,18 @@ export async function sendAdminNewBookingAlert(b: {
     </a>
   `);
 
-  await transporter.sendMail({
-    from: FROM,
-    to: ADMIN_EMAIL,
-    subject: `[Vihara] New Booking ${b.booking_ref} — ${b.name} (Manual ⏳)`,
-    html,
-  });
+  await sendEmail(
+    ADMIN_EMAIL,
+    `[Vihara] New Booking ${b.booking_ref} — ${b.name} (Manual ⏳)`,
+    html
+  );
 }
 
 export async function sendGuestBookingConfirmed(b: {
-  name: string;
-  email: string;
-  booking_ref: string;
-  plan_label: string;
-  check_in: string;
-  check_out?: string;
-  guests: number;
-  total_amount: number;
-  admin_notes?: string;
+  name: string; email: string; booking_ref: string;
+  plan_label: string; check_in: string; check_out?: string;
+  guests: number; total_amount: number; admin_notes?: string;
 }) {
-  const transporter = await getTransporter();
   const html = base(`
     <h1 style="margin:0 0 6px;font-size:26px;color:#1a1a1a;font-weight:normal;">Your Booking is Confirmed! 🎉</h1>
     <p style="margin:0 0 24px;font-size:14px;color:#888;font-family:Arial,sans-serif;">
@@ -207,35 +175,22 @@ export async function sendGuestBookingConfirmed(b: {
         Location: Kothur, ORR Exit 15 or 16, Hyderabad.
       </p>
     </div>
-    ${
-      b.admin_notes
-        ? `
+    ${b.admin_notes ? `
     <div style="background:#f9f7f4;border:1px solid #eee;padding:16px 20px;margin-bottom:24px;">
       <p style="margin:0 0 4px;font-size:11px;color:#888;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif;">Note from our team</p>
       <p style="margin:0;font-size:13px;color:#555;font-family:Arial,sans-serif;line-height:1.6;">${b.admin_notes}</p>
-    </div>`
-        : ""
-    }
+    </div>` : ""}
     <p style="margin:0;font-size:13px;color:#555;font-family:Arial,sans-serif;line-height:1.6;">
       For directions, call <strong>+91 9032169777</strong> or reply to this email.
     </p>
   `);
 
-  await transporter.sendMail({
-    from: FROM,
-    to: b.email,
-    subject: `Your Vihara Booking is Confirmed — ${b.booking_ref}`,
-    html,
-  });
+  await sendEmail(b.email, `Your Vihara Booking is Confirmed — ${b.booking_ref}`, html);
 }
 
 export async function sendGuestBookingRejected(b: {
-  name: string;
-  email: string;
-  booking_ref: string;
-  admin_notes?: string;
+  name: string; email: string; booking_ref: string; admin_notes?: string;
 }) {
-  const transporter = await getTransporter();
   const html = base(`
     <h1 style="margin:0 0 6px;font-size:26px;color:#1a1a1a;font-weight:normal;">Booking Update</h1>
     <p style="margin:0 0 24px;font-size:14px;color:#888;font-family:Arial,sans-serif;">
@@ -245,24 +200,15 @@ export async function sendGuestBookingRejected(b: {
       <p style="margin:0 0 2px;font-size:10px;color:#D9B59D;letter-spacing:3px;text-transform:uppercase;font-family:Arial,sans-serif;">Booking Reference</p>
       <p style="margin:0;font-size:24px;color:#fff;letter-spacing:4px;font-family:Courier,monospace;">${b.booking_ref}</p>
     </div>
-    ${
-      b.admin_notes
-        ? `
+    ${b.admin_notes ? `
     <div style="background:#fff8f0;border:1px solid #f0e0c8;padding:16px 20px;margin-bottom:24px;">
       <p style="margin:0 0 4px;font-size:11px;color:#B85C38;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif;">Reason</p>
       <p style="margin:0;font-size:13px;color:#555;font-family:Arial,sans-serif;line-height:1.6;">${b.admin_notes}</p>
-    </div>`
-        : ""
-    }
+    </div>` : ""}
     <p style="margin:0;font-size:13px;color:#555;font-family:Arial,sans-serif;line-height:1.6;">
       Please contact us at <strong>+91 9032169777</strong> or reply to this email.
     </p>
   `);
 
-  await transporter.sendMail({
-    from: FROM,
-    to: b.email,
-    subject: `Regarding Your Vihara Booking — ${b.booking_ref}`,
-    html,
-  });
+  await sendEmail(b.email, `Regarding Your Vihara Booking — ${b.booking_ref}`, html);
 }
