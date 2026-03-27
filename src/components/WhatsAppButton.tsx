@@ -14,17 +14,7 @@ export default function WhatsAppButton() {
       className="fixed bottom-6 right-6 z-50 flex items-center gap-3 group"
       aria-label="Chat with us on WhatsApp"
     >
-      {/* Tooltip */}
-      <div
-        className={`bg-white text-[#1a1a1a] text-xs font-medium px-3 py-2 rounded-full shadow-lg border border-[#eee] whitespace-nowrap transition-all duration-300 ${
-          hovered
-            ? "opacity-100 translate-x-0"
-            : "opacity-0 translate-x-2 pointer-events-none"
-        }`}
-      >
-        Chat with us on WhatsApp
-      </div>
-
+   
       {/* Button */}
       <div className="relative w-14 h-14 rounded-full bg-[#25D366] shadow-lg flex items-center justify-center hover:bg-[#20BA5A] transition-colors duration-300 hover:scale-110 transform">
         {/* Pulse ring */}
