@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { supabaseAdmin, Booking, BookingStatus } from "@/lib/supabase";
+import { supabase, Booking, BookingStatus } from "@/lib/supabase";
 
 const ADMIN_TOKEN = process.env.NEXT_PUBLIC_ADMIN_TOKEN || "vihara-admin-2024";
 const ADMIN_PASSWORD = "vihara@admin2024";
@@ -72,7 +72,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (!authed) return;
-    const channel = supabaseAdmin
+    const channel = supabase
       .channel("admin-bookings")
       .on("postgres_changes", { event: "*", schema: "public", table: "bookings" }, () => fetchBookings())
       .subscribe();
@@ -102,11 +102,13 @@ export default function AdminDashboard() {
 
   async function fetchBookings() {
     setLoading(true);
-    const { data } = await supabaseAdmin
-      .from("bookings")
-      .select("*")
-      .order("created_at", { ascending: false });
-    setBookings((data as Booking[]) || []);
+    try {
+      const res = await fetch("/api/admin/all-bookings", {
+        headers: { Authorization: `Bearer ${ADMIN_TOKEN}` },
+      });
+      const data = await res.json();
+      if (data.bookings) setBookings(data.bookings as Booking[]);
+    } catch (e) { console.error(e); }
     setLoading(false);
   }
 
@@ -125,7 +127,11 @@ export default function AdminDashboard() {
   async function saveEdit() {
     if (!selected) return;
     setUpdating(true);
-    await supabaseAdmin.from("bookings").update(editForm).eq("id", selected.id);
+    await fetch("/api/admin/update-booking", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${ADMIN_TOKEN}` },
+      body: JSON.stringify({ booking_id: selected.id, ...editForm }),
+    });
     await fetchBookings();
     setSelected(prev => prev ? { ...prev, ...editForm } : null);
     setActiveTab("details");
