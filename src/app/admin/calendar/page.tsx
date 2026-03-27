@@ -1,4 +1,3 @@
-
 "use client";
 import { useState, useEffect } from "react";
 import { Booking, BookingStatus } from "@/lib/supabase";
@@ -167,7 +166,7 @@ export default function CalendarPage() {
   // ── LOGIN ──
   if (!authed) {
     return (
-      <div className="min-h-screen bg-[#F5F1EA] pt-16 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#F5F1EA] flex items-center justify-center px-4">
         <div className="bg-white border border-[#eee] p-8 w-full max-w-sm rounded-[16px]">
           <p className="text-[#D9B59D] text-xs uppercase tracking-widest mb-1">Vihara Admin</p>
           <h1 className="text-2xl font-normal text-[#1a1a1a] mb-6">Booking Calendar</h1>
@@ -245,7 +244,11 @@ export default function CalendarPage() {
             <button onClick={() => { setCurrentMonth(now.getMonth()); setCurrentYear(now.getFullYear()); }}
               className="px-3 py-1.5 text-xs border border-[#ddd] bg-white hover:bg-[#f5f5f5] rounded-lg">Today</button>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
+            <button onClick={() => setShowManual(true)}
+              className="px-4 py-1.5 text-xs rounded-lg border border-[#2D4A3E] bg-[#2D4A3E] text-white hover:bg-[#1C3028] transition-colors font-medium">
+              + Manual Booking
+            </button>
             {(["cal", "list"] as const).map(v => (
               <button key={v} onClick={() => setActiveView(v)}
                 className={`px-4 py-1.5 text-xs rounded-lg border transition-colors ${activeView === v ? "bg-[#2D4A3E] text-white border-[#2D4A3E]" : "bg-white border-[#ddd] text-[#555]"}`}>
