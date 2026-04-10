@@ -111,7 +111,7 @@ export default function CalendarPage() {
   async function fetchBookings() {
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/bookings?year=${currentYear}&month=${currentMonth}`, {
+      const res = await fetch(`/admin/bookings?year=${currentYear}&month=${currentMonth}`, {
         headers: { Authorization: `Bearer ${ADMIN_TOKEN}` },
       });
       const data = await res.json();
@@ -189,7 +189,7 @@ export default function CalendarPage() {
     else setCurrentMonth(m => m + 1);
   }
 
-  // â”€â”€ LOGIN â”€â”€
+  // LOGIN
   if (!authed) {
     return (
       <div className="min-h-screen bg-[#F5F1EA] flex items-center justify-center px-4">
@@ -203,7 +203,7 @@ export default function CalendarPage() {
             className="w-full border border-[#ddd] px-3 py-2.5 text-sm outline-none focus:border-[#2D4A3E] transition-colors mb-3 rounded-lg" />
           {loginError && <p className="text-xs text-red-500 mb-3">{loginError}</p>}
           <button onClick={handleLogin} className="w-full bg-[#2D4A3E] text-white py-2.5 text-sm rounded-lg hover:bg-[#1C3028] transition-colors">
-            Sign In â†’
+            Sign In ->
           </button>
         </div>
       </div>
@@ -238,7 +238,7 @@ export default function CalendarPage() {
             className="bg-[#D9B59D] text-[#1a1a1a] text-xs font-medium px-4 py-2 rounded-lg hover:bg-[#c9a08d] transition-colors">
             + Manual Booking
           </button>
-          <a href="/admin" className="text-white/60 text-xs hover:text-white transition-colors">â† Dashboard</a>
+          <a href="/admin" className="text-white/60 text-xs hover:text-white transition-colors"><- Dashboard</a>
           <button onClick={() => { sessionStorage.removeItem("cal_authed"); setAuthed(false); }}
             className="text-white/40 text-xs hover:text-white transition-colors">Logout</button>
         </div>
@@ -249,7 +249,7 @@ export default function CalendarPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           {[
             { label: "Total Bookings", value: visibleBookings.length, sub: "this month" },
-            { label: "Revenue", value: `â‚¹${(revenue / 1000).toFixed(0)}K`, sub: "confirmed only" },
+            { label: "Revenue", value: `Rs. ${(revenue / 1000).toFixed(0)}K`, sub: "confirmed only" },
             { label: "Occupied Days", value: occupiedDays.size, sub: `out of ${daysInMonth}` },
             { label: "Pending", value: pending.length, sub: "awaiting confirmation" },
           ].map(s => (
@@ -264,9 +264,9 @@ export default function CalendarPage() {
         {/* Controls */}
         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
           <div className="flex items-center gap-2">
-            <button onClick={prevMonth} className="w-8 h-8 flex items-center justify-center border border-[#ddd] bg-white hover:bg-[#f5f5f5] rounded-lg">â€¹</button>
+            <button onClick={prevMonth} className="w-8 h-8 flex items-center justify-center border border-[#ddd] bg-white hover:bg-[#f5f5f5] rounded-lg">&lt;</button>
             <span className="text-base font-medium text-[#1a1a1a] min-w-[180px] text-center">{MONTHS[currentMonth]} {currentYear}</span>
-            <button onClick={nextMonth} className="w-8 h-8 flex items-center justify-center border border-[#ddd] bg-white hover:bg-[#f5f5f5] rounded-lg">â€º</button>
+            <button onClick={nextMonth} className="w-8 h-8 flex items-center justify-center border border-[#ddd] bg-white hover:bg-[#f5f5f5] rounded-lg">&gt;</button>
             <button onClick={() => { setCurrentMonth(now.getMonth()); setCurrentYear(now.getFullYear()); }}
               className="px-3 py-1.5 text-xs border border-[#ddd] bg-white hover:bg-[#f5f5f5] rounded-lg">Today</button>
           </div>
@@ -358,9 +358,9 @@ export default function CalendarPage() {
                       <span className="text-xs px-2 py-0.5 rounded" style={{ background: st.bg, color: st.text }}>{st.label}</span>
                       <span className="font-mono text-xs text-[#888]">{b.booking_ref}</span>
                     </div>
-                    <div className="text-xs text-[#888]">{b.plan_label} Â· {b.guests} guests Â· {b.check_in}{b.check_out && b.check_out !== b.check_in ? ` â†’ ${b.check_out}` : ""}</div>
+                    <div className="text-xs text-[#888]">{b.plan_label} - {b.guests} guests - {b.check_in}{b.check_out && b.check_out !== b.check_in ? ` -> ${b.check_out}` : ""}</div>
                   </div>
-                  <div className="text-sm font-medium text-[#1a1a1a] whitespace-nowrap">â‚¹{b.total_amount.toLocaleString("en-IN")}</div>
+                  <div className="text-sm font-medium text-[#1a1a1a] whitespace-nowrap">Rs. {b.total_amount.toLocaleString("en-IN")}</div>
                 </div>
               );
             })}
@@ -382,18 +382,18 @@ export default function CalendarPage() {
                 </div>
                 <h3 className="text-lg font-medium text-[#1a1a1a]">{selected.name}</h3>
               </div>
-              <button onClick={() => setSelected(null)} className="text-[#888] hover:text-[#1a1a1a] text-xl leading-none">âœ•</button>
+              <button onClick={() => setSelected(null)} className="text-[#888] hover:text-[#1a1a1a] text-xl leading-none">x</button>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
               {[
                 { label: "Booking Ref", value: selected.booking_ref },
                 { label: "Package", value: selected.plan_label },
                 { label: "Check In", value: selected.check_in },
-                { label: "Check Out", value: selected.check_out || "â€”" },
+                { label: "Check Out", value: selected.check_out || "-" },
                 { label: "Guests", value: String(selected.guests) },
-                { label: "Amount", value: `â‚¹${selected.total_amount.toLocaleString("en-IN")}` },
+                { label: "Amount", value: `Rs. ${selected.total_amount.toLocaleString("en-IN")}` },
                 { label: "Phone", value: selected.phone },
-                { label: "Payment", value: selected.payment_method || "â€”" },
+                { label: "Payment", value: selected.payment_method || "-" },
               ].map(r => (
                 <div key={r.label}>
                   <p className="text-xs text-[#888] mb-0.5">{r.label}</p>
@@ -405,13 +405,13 @@ export default function CalendarPage() {
               <div className="bg-[#f9f7f4] border border-[#eee] px-4 py-3 rounded-lg">
                 <p className="text-xs text-[#888] mb-1">Paid Amount</p>
                 <p className="text-sm font-medium text-[#1a1a1a]">
-                  â‚¹{(selected.paid_amount ?? 0).toLocaleString("en-IN")}
+                  Rs. {(selected.paid_amount ?? 0).toLocaleString("en-IN")}
                 </p>
               </div>
               <div className="bg-[#f9f7f4] border border-[#eee] px-4 py-3 rounded-lg">
                 <p className="text-xs text-[#888] mb-1">Balance Amount</p>
                 <p className="text-sm font-medium text-[#1a1a1a]">
-                  â‚¹
+                  Rs.
                   {(
                     selected.balance_amount ??
                     Math.max(0, selected.total_amount - (selected.paid_amount ?? 0))
@@ -447,7 +447,7 @@ export default function CalendarPage() {
         </div>
       </div>
 
-      {/* â”€â”€ MANUAL BOOKING MODAL â”€â”€ */}
+      {/* MANUAL BOOKING MODAL */}
       {showManual && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
           onClick={e => { if (e.target === e.currentTarget) setShowManual(false); }}>
@@ -457,7 +457,7 @@ export default function CalendarPage() {
                 <p className="text-[#D9B59D] text-xs uppercase tracking-widest">Admin</p>
                 <p className="text-white font-medium">Create Manual Booking</p>
               </div>
-              <button onClick={() => setShowManual(false)} className="text-white/60 hover:text-white text-xl leading-none">âœ•</button>
+              <button onClick={() => setShowManual(false)} className="text-white/60 hover:text-white text-xl leading-none">x</button>
             </div>
 
             <div className="p-6 space-y-5">
@@ -487,9 +487,9 @@ export default function CalendarPage() {
                   </div>
                 </div>
                 <div className="mt-2 flex justify-between text-xs text-white/70">
-                  <span>Paid: â‚¹{mForm.paid_amount.toLocaleString("en-IN")}</span>
+                  <span>Paid: Rs. {mForm.paid_amount.toLocaleString("en-IN")}</span>
                   <span>
-                    Balance: â‚¹{mForm.balance_amount.toLocaleString("en-IN")}
+                    Balance: Rs. {mForm.balance_amount.toLocaleString("en-IN")}
                   </span>
                 </div>
               </div>
@@ -517,7 +517,7 @@ export default function CalendarPage() {
                     <select value={mForm.plan_label}
                       onChange={e => setMForm(m => ({ ...m, plan_label: e.target.value }))}
                       className="w-full border border-[#ddd] px-3 py-2 text-sm outline-none focus:border-[#2D4A3E] rounded-lg bg-white">
-                      {PLANS.map(p => <option key={p.label} value={p.label}>{p.label} â€” {p.type}</option>)}
+                      {PLANS.map(p => <option key={p.label} value={p.label}>{p.label} - {p.type}</option>)}
                     </select>
                   </div>
                   <div>
@@ -663,5 +663,6 @@ export default function CalendarPage() {
     </div>
   );
 }
+
 
 
