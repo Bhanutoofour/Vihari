@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Booking, BookingStatus } from "@/lib/supabase";
 import { ADMIN_TOKEN } from "@/components/admin/config";
+import { getBookingRange, isInvalidBookingRange } from "@/lib/booking-rules";
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MONTHS = [
@@ -49,26 +50,23 @@ function generateRef() {
 
 function bookingOverlapsMonth(booking: Booking, year: number, month: number) {
   const monthStart = new Date(year, month, 1, 0, 0, 0, 0);
-  const monthEnd = new Date(year, month + 1, 0, 23, 59, 59, 999);
-  const bookingStart = new Date(`${booking.check_in}T00:00:00`);
-  const bookingEnd = booking.check_out
-    ? new Date(`${booking.check_out}T23:59:59.999`)
-    : new Date(`${booking.check_in}T23:59:59.999`);
+  const monthEndExclusive = new Date(year, month + 1, 1, 0, 0, 0, 0);
+  const bookingRange = getBookingRange(booking);
 
-  return bookingStart <= monthEnd && bookingEnd >= monthStart;
+  return (
+    bookingRange.start < monthEndExclusive &&
+    bookingRange.endExclusive > monthStart
+  );
 }
 
 function bookingIncludesDay(booking: Booking, date: Date) {
   const dayStart = new Date(date);
   dayStart.setHours(0, 0, 0, 0);
-  const dayEnd = new Date(date);
-  dayEnd.setHours(23, 59, 59, 999);
-  const bookingStart = new Date(`${booking.check_in}T00:00:00`);
-  const bookingEnd = booking.check_out
-    ? new Date(`${booking.check_out}T23:59:59.999`)
-    : new Date(`${booking.check_in}T23:59:59.999`);
+  const dayEndExclusive = new Date(dayStart);
+  dayEndExclusive.setDate(dayEndExclusive.getDate() + 1);
+  const bookingRange = getBookingRange(booking);
 
-  return bookingStart <= dayEnd && bookingEnd >= dayStart;
+  return bookingRange.start < dayEndExclusive && bookingRange.endExclusive > dayStart;
 }
 
 export default function AdminCalendarPage() {
@@ -173,6 +171,10 @@ export default function AdminCalendarPage() {
       setManualError("Check-in date is required.");
       return;
     }
+    if (isInvalidBookingRange(manualForm)) {
+      setManualError("Check-out must be after check-in.");
+      return;
+    }
 
     setManualSaving(true);
     try {
@@ -247,13 +249,10 @@ export default function AdminCalendarPage() {
   const occupiedDays = useMemo(() => {
     const occupied = new Set<number>();
     bookings.forEach((booking) => {
-      const start = new Date(`${booking.check_in}T00:00:00`);
-      const end = booking.check_out
-        ? new Date(`${booking.check_out}T00:00:00`)
-        : new Date(`${booking.check_in}T00:00:00`);
-      const cursor = new Date(start);
+      const range = getBookingRange(booking);
+      const cursor = new Date(range.start);
 
-      while (cursor <= end) {
+      while (cursor < range.endExclusive) {
         if (
           cursor.getFullYear() === currentYear &&
           cursor.getMonth() === currentMonth
@@ -528,6 +527,13 @@ export default function AdminCalendarPage() {
                           const value =
                             field.type === "number" ? +e.target.value : e.target.value;
                           const next = { ...current, [field.key]: value } as typeof current;
+                          if (
+                            field.key === "check_in" &&
+                            next.check_out &&
+                            next.check_out <= String(value)
+                          ) {
+                            next.check_out = "";
+                          }
                           if (field.key === "paid_amount") {
                             next.balance_amount = Math.max(0, next.total_amount - Number(value || 0));
                           }
@@ -536,6 +542,17 @@ export default function AdminCalendarPage() {
                           }
                           return next;
                         })
+                      }
+                      min={
+                        field.key === "check_in"
+                          ? new Date().toISOString().split("T")[0]
+                          : field.key === "check_out" && manualForm.check_in
+                            ? new Date(
+                                new Date(manualForm.check_in).getTime() + 86400000,
+                              )
+                                .toISOString()
+                                .split("T")[0]
+                            : undefined
                       }
                       className={`w-full border px-3 py-2 text-sm outline-none focus:border-[#2D4A3E] rounded-lg ${
                         (field.key === "name" && manualError && !manualForm.name.trim()) ||

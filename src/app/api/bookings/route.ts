@@ -4,6 +4,11 @@ import {
   sendGuestBookingReceived,
   sendAdminNewBookingAlert,
 } from "@/lib/email";
+import {
+  BLOCKING_BOOKING_STATUSES,
+  bookingRangesOverlap,
+  isInvalidBookingRange,
+} from "@/lib/booking-rules";
 
 function generateRef() {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -29,6 +34,40 @@ export async function POST(req: NextRequest) {
       phone,
       requests,
     } = body;
+
+    if (isInvalidBookingRange({ check_in, check_out })) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Check-out must be after check-in. Stay bookings run from 3 PM to 11 AM next day.",
+        },
+        { status: 400 },
+      );
+    }
+
+    const { data: existingBookings, error: existingError } = await supabaseAdmin
+      .from("bookings")
+      .select("id, booking_ref, check_in, check_out, status")
+      .in("status", [...BLOCKING_BOOKING_STATUSES]);
+
+    if (existingError) throw existingError;
+
+    const conflictingBooking = (existingBookings || []).find((booking) =>
+      bookingRangesOverlap(
+        { check_in, check_out },
+        { check_in: booking.check_in, check_out: booking.check_out },
+      ),
+    );
+
+    if (conflictingBooking) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Already booked for the selected check-in date range. Booking ${conflictingBooking.booking_ref} blocks that slot.`,
+        },
+        { status: 409 },
+      );
+    }
 
     const booking_ref = generateRef();
 

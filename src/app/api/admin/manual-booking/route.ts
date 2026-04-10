@@ -4,12 +4,21 @@ import {
   sendGuestBookingReceived,
   sendAdminNewBookingAlert,
 } from "@/lib/email";
+import {
+  BLOCKING_BOOKING_STATUSES,
+  bookingRangesOverlap,
+  isInvalidBookingRange,
+} from "@/lib/booking-rules";
 
 function isMissingColumnError(message?: string) {
   return Boolean(
     message &&
       (message.includes("'paid_amount'") || message.includes("'balance_amount'")),
   );
+}
+
+function isStatusConstraintError(message?: string) {
+  return Boolean(message && message.includes("bookings_status_check"));
 }
 
 export async function POST(req: NextRequest) {
@@ -37,6 +46,40 @@ export async function POST(req: NextRequest) {
       status,
       payment_method,
     } = body;
+
+    if (isInvalidBookingRange({ check_in, check_out })) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Check-out must be after check-in. A stay occupies 3 PM to 11 AM next day, and the next guest can check in from 3 PM on checkout day.",
+        },
+        { status: 400 },
+      );
+    }
+
+    const { data: existingBookings, error: existingError } = await supabaseAdmin
+      .from("bookings")
+      .select("id, booking_ref, check_in, check_out, status")
+      .in("status", [...BLOCKING_BOOKING_STATUSES]);
+
+    if (existingError) throw existingError;
+
+    const conflictingBooking = (existingBookings || []).find((booking) =>
+      bookingRangesOverlap(
+        { check_in, check_out },
+        { check_in: booking.check_in, check_out: booking.check_out },
+      ),
+    );
+
+    if (conflictingBooking) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Slot already booked by ${conflictingBooking.booking_ref}. Checkout day remains available for the next guest after 3 PM, but overlapping check-in dates are blocked.`,
+        },
+        { status: 409 },
+      );
+    }
 
     // Create or find user account
     let user_id: string | null = null;
@@ -94,6 +137,16 @@ export async function POST(req: NextRequest) {
         .single();
       data = fallback.data;
       error = fallback.error;
+    }
+
+    if (error && isStatusConstraintError(error.message) && status === "half_payment_done") {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Database schema update required: add 'half_payment_done' to the bookings status constraint before using this status.",
+        },
+        { status: 400 },
+      );
     }
 
     if (error) throw error;
